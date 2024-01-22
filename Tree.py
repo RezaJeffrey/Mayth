@@ -82,6 +82,16 @@ class Tree:
 
         return None, None
 
+    def find_parent_by_value(self, value) -> Node:
+        parent = self.root
+
+        for child in parent.children:
+            if child.value == value:
+                return parent
+            self.find_parent_by_value(child)
+
+        return None
+
     def check_child_and_grand_relation(self, parent: Node, child: Node) -> bool:
 
         for sub_tree_child in parent.children:
@@ -90,9 +100,12 @@ class Tree:
                 return True
         return False  # input parent is not a parent of input child node
 
+    def check_nodes_are_siblings(self, node1: Node, node2: Node):
+        parent_node1 = self.find_parent_by_value(node1.value)
+        parent_node2 = self.find_parent_by_value(node2.value)
 
-
-
-
+        if parent_node2.value == parent_node1.value:
+            return True
+        return False
 
     # TODO hash before passing in the strings
