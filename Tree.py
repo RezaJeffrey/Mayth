@@ -82,17 +82,17 @@ class Tree:
 
         return None, None
 
+    def check_child_and_grand_relation(self, parent: Node, child: Node) -> bool:
+
+        for sub_tree_child in parent.children:
+            result = self.find_node(sub_tree_child, child.value)
+            if result:
+                return True
+        return False  # input parent is not a parent of input child node
 
 
 
 
 
 
-
-
-
-
-
-
-
-
+    # TODO hash before passing in the strings
