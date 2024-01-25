@@ -4,6 +4,7 @@ body {
 		"Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	padding: 0px;
 }
 
 code {
@@ -21,6 +22,9 @@ code {
 	flex-direction: column;
 	align-items: center;
 	gap: 20px;
+	padding-bottom: 10px;
+	border-bottom: 3px solid rgb(255, 206, 206);
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 .note {
 	padding: 2px;

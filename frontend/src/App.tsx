@@ -1,7 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
-import { Graph, GraphConfiguration, GraphNode } from "react-d3-graph";
+import { Graph } from "react-d3-graph";
+import { sha256 } from "./utils/hash";
+
+const shorten = function (id: string): string {
+	return id.substring(0, 10);
+};
 
 const allConfig = {
 	automaticRearrangeAfterDropNode: true,
@@ -73,6 +78,9 @@ const myConfig = {
 interface Node {
 	id: string;
 	size: number;
+	x?: number;
+	y?: number;
+	originalId: string;
 }
 interface Link {
 	source: string;
@@ -80,8 +88,10 @@ interface Link {
 }
 const NODE_SIZE = 1000;
 
+const hashedFatherString = sha256("Father") as string;
 const INITIAL_NODE = {
-	id: "Father",
+	originalId: hashedFatherString,
+	id: shorten(hashedFatherString),
 	size: NODE_SIZE,
 	x: window.innerWidth / 2,
 	y: window.innerHeight / 2 - 120,
@@ -89,15 +99,20 @@ const INITIAL_NODE = {
 function App() {
 	const [nodes, setNodes] = useState<Array<Node>>([INITIAL_NODE]);
 	const [links, setLinks] = useState<Array<Link>>([]);
-	const containerRef = useRef();
 
 	const addNodeHandler = function (nodeId: string) {
 		const nodeName = window.prompt("Enter child name:");
 		if (!nodeName) return;
+		const hashedNewNodeName = sha256(nodeName) as string;
+		const shortenHashedNewNodeName = shorten(hashedNewNodeName);
 
-		const newNode: Node = { id: nodeName, size: NODE_SIZE };
+		const newNode: Node = {
+			originalId: hashedNewNodeName,
+			id: shorten(hashedNewNodeName),
+			size: NODE_SIZE,
+		};
 		setNodes((prev) => [...prev, newNode]);
-		setLinks((prev) => [...prev, { source: nodeId, target: nodeName }]);
+		setLinks((prev) => [...prev, { source: nodeId, target: shortenHashedNewNodeName }]);
 	};
 
 	return (
