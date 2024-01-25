@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import ReactJson from "react-json-view";
 import { Tree } from "../models/Tree";
+import { sha256 } from "../utils/hash";
 
 type Props = {
 	data: string;
@@ -26,10 +27,6 @@ const Operations: FC<Props> = ({ data }) => {
 		}
 		setTree(newTree);
 	}, []);
-
-	useEffect(() => {
-		console.log(tree);
-	}, [tree]);
 
 	const childParentHandler = () => {
 		const child = prompt("Enter child name");
@@ -83,6 +80,20 @@ const Operations: FC<Props> = ({ data }) => {
 		}
 	};
 
+	const findFurthestChildHandler = () => {
+		const nodeId = sha256(prompt("Enter name"));
+		if (!nodeId) return;
+
+		const res = tree?.findFurthestChild(nodeId);
+		alert(res);
+	};
+
+	const findFurthestRelationHandler = () => {
+		const res = tree?.findLongestPath();
+		if (!res) return;
+		alert(`START: ${res[0]}\nEND: ${res[1]}\nLENGTH: ${res[2]}`);
+	};
+
 	return (
 		<div className="operations">
 			<div className="buttons">
@@ -96,10 +107,14 @@ const Operations: FC<Props> = ({ data }) => {
 					Check distant relatives relation
 				</button>
 				<button className="button" onClick={findSameAncestorHandler}>
-					find same ancestor{" "}
+					find same ancestor
 				</button>
-				<button className="button">find furthest child</button>
-				<button className="button">find furthest relation</button>
+				<button className="button" onClick={findFurthestChildHandler}>
+					find furthest child
+				</button>
+				<button className="button" onClick={findFurthestRelationHandler}>
+					find furthest relation
+				</button>
 			</div>
 			<div className="viewer">
 				<h5>JSON VIEWER FOR YOUR BETTER UNDERSTANDING FROM RELATIONS</h5>

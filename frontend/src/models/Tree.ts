@@ -12,6 +12,7 @@ export class Tree {
 		}
 		return null;
 	}
+
 	findPathToRoot(node: Node | null) {
 		const path: Node[] = [];
 		while (node !== null) {
@@ -35,10 +36,11 @@ export class Tree {
 		const parentNodeId = sha256(parentName);
 
 		const childNode = this.findNodeById(childNodeId);
-		if (!childNode) return false;
-		if (childNode.parentNode?.nodeId !== parentNodeId) return false;
 
-		return true;
+		const path = this.findPathToRoot(childNode);
+		if (!childNode) return false;
+		const isChild = path.find((id) => id.nodeId === parentNodeId);
+		return Boolean(isChild);
 	}
 
 	checkSiblingsRelation(firstChildName: string, secondChildName: string): boolean {
@@ -89,6 +91,79 @@ export class Tree {
 			}
 		}
 
+		return false;
+	}
+
+	findFurthestChild(nodeId: string | null): number {
+		if (!nodeId) return 0;
+		const node = this.findNodeById(nodeId);
+		if (!node) return 0;
+
+		if (node.children.length === 0) {
+			return 0; // Base case: leaf node
+		}
+
+		let maxChildDepth = 0;
+
+		for (const child of node.children) {
+			const childDepth = 1 + this.findFurthestChild(child.nodeId);
+			if (childDepth > maxChildDepth) {
+				maxChildDepth = childDepth;
+			}
+		}
+
+		return maxChildDepth;
+	}
+	bfs(node: Node): [Node, number] | false {
+		if (!node) return false;
+
+		const visited: Node[] = [node];
+		let p: Node = node;
+		let maxDistance: number = 0;
+		const queue: [Node, number][] = [];
+		queue.push([node, 0]);
+		while (queue.length > 0) {
+			const s: [Node, number] = queue.shift()!;
+			if (s[1] > maxDistance) {
+				maxDistance = s[1];
+				p = s[0];
+			}
+			for (const child of s[0].children.concat(s[0].parentNode ? [s[0].parentNode] : [])) {
+				if (child && !visited.includes(child)) {
+					visited.push(child);
+					queue.push([child, s[1] + 1]);
+				}
+			}
+		}
+		return [p, maxDistance];
+	}
+	getLeaves(): Node[] {
+		const leaves: Node[] = [];
+		for (const node of this.nodes) {
+			if (node.children.length === 0) {
+				leaves.push(node);
+			}
+		}
+		return leaves;
+	}
+	findLongestPath(): [string, string, number] | false {
+		const rootNodeId = sha256("Father");
+		const rootNode = this.nodes.find((node) => node.nodeId === rootNodeId);
+		if (!rootNode) return false;
+
+		let longestPath: number = 0;
+		let p: Node = rootNode;
+		let leaf: Node | null = null;
+		for (const l of this.getLeaves()) {
+			const path = this.bfs(l);
+			if (!path) break;
+			if (path[1] > longestPath) {
+				longestPath = path[1];
+				p = path[0];
+				leaf = l;
+			}
+			return [p.nodeId as string, leaf ? (leaf.nodeId as string) : "", longestPath];
+		}
 		return false;
 	}
 }
