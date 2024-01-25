@@ -45,8 +45,8 @@ const Operations: FC<Props> = ({ data }) => {
 	};
 
 	const siblingsHandler = () => {
-		const firstChild = prompt("Enter first child name");
-		const secondChild = prompt("Enter second child name");
+		const firstChild = prompt("Enter first name");
+		const secondChild = prompt("Enter second name");
 		if (!firstChild || !secondChild) return;
 
 		const res = tree?.checkSiblingsRelation(firstChild, secondChild);
@@ -57,9 +57,22 @@ const Operations: FC<Props> = ({ data }) => {
 		}
 	};
 
+	const distantHandler = () => {
+		const firstChild = prompt("Enter first  name");
+		const secondChild = prompt("Enter second name");
+		if (!firstChild || !secondChild) return;
+
+		const res = tree?.checkDistantRelation(firstChild, secondChild);
+		if (res) {
+			alert("They have distant relative relation");
+		} else {
+			alert("They don't have distant relative relation");
+		}
+	};
+
 	const findSameAncestorHandler = () => {
-		const firstChild = prompt("Enter first child name");
-		const secondChild = prompt("Enter second child name");
+		const firstChild = prompt("Enter first name");
+		const secondChild = prompt("Enter second name");
 		if (!firstChild || !secondChild) return;
 
 		const res = tree?.findSameAncestor(firstChild, secondChild);
@@ -79,7 +92,9 @@ const Operations: FC<Props> = ({ data }) => {
 				<button onClick={siblingsHandler} className="button">
 					Check siblings relation
 				</button>
-				<button className="button">Check distant relatives relation</button>
+				<button className="button" onClick={distantHandler}>
+					Check distant relatives relation
+				</button>
 				<button className="button" onClick={findSameAncestorHandler}>
 					find same ancestor{" "}
 				</button>
