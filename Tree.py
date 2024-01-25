@@ -2,7 +2,7 @@ from Hash import sha_256
 
 
 class Node:
-    def __init__(self, value: str = None, children: list['Node'] = list['Node']):
+    def __init__(self, value: str = None, children: list() = list()):
         self.value = value
         self.children = children
 
@@ -49,9 +49,11 @@ class Tree:
         """
         if not node:
             return 0
+
         size = 1  # Count current node
         for child in node.children:
             size += self.get_subtree_size(child)
+
         return size
 
     def find_node(self, node, value):
@@ -169,3 +171,47 @@ class Tree:
         return common_parent
 
     # TODO hash before passing in the strings
+
+
+
+
+
+# Program
+
+tree = Tree()
+node_A = Node("A")
+node_B = Node("B")
+node_C = Node("C")
+node_D = Node("D")
+node_E = Node("E")
+
+# Add nodes to the tree
+tree.add(None, "A")
+tree.add("A", "B")
+tree.add("A", "C")
+tree.add("B", "D")
+tree.add("B", "E")
+
+# Print the tree structure
+print("Tree structure:")
+print("Size:", tree.size())
+#
+# # Test remove method
+# removed = tree.remove("C")
+# print("Node 'C' removed:", removed)
+# print("Tree size after removal:", tree.size())
+#
+# # Test depth_of_farthest_child method
+# depth_of_farthest = tree.depth_of_farthest_child(tree.root)
+# print("Depth of the farthest child from root:", depth_of_farthest)
+#
+# # Test find_farthest_relationship method
+# farthest_relationship = tree.find_farthest_relationship()
+# print("Farthest relationship in the family tree:", farthest_relationship)
+#
+# # Test find_common_parent method
+# common_parent = tree.find_common_parent(node_D, node_E)
+# print("Common parent of nodes 'D' and 'E':", common_parent.value)
+
+
+
