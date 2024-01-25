@@ -7,7 +7,7 @@ type Props = {
 	data: string;
 };
 const Operations: FC<Props> = ({ data }) => {
-	const [tree, setTree] = useState<null | Tree>(null);
+	const [tree, setTree] = useState<Tree | null>(null);
 
 	useEffect(() => {
 		const parsedData = JSON.parse(data);
