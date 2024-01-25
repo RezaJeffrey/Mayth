@@ -18,7 +18,7 @@ const Operations: FC<Props> = ({ data }) => {
 			</div>
 			<div className="viewer">
 				<h5>JSON VIEWER FOR YOUR BETTER UNDERSTANDING FROM RELATIONS</h5>
-				<ReactJson src={JSON.parse(data)} />
+				<ReactJson theme="google" src={JSON.parse(data)} />
 			</div>
 		</div>
 	);
