@@ -5,7 +5,8 @@ The `Tree` class represents a family tree with nodes and provides various method
 Our first approach was to divide the project into Front-end and Back-end. We initially considered using Django as the Back-end framework and React as the Front-end. However, we later realized that this might be unnecessary and time-consuming since the project doesn't require any database actions. Therefore, we decided to convert the code to TypeScript and handle the entire project on the client-side.
 
 The reason to use Sha256 as a Hashing algorithm is that Sha256 is known as one of the strongest hashing algorithms. It is a One-way Hashing algorithm, which means there is no way of finding the original value from the Hashed string. Other mentioned algorithms are considered vulnerable and insecure. The time complexity of the SHA-256 cryptographic hash function is considered to be approximately O(n), where n is the length of the input message or data.
-
+<br/>
+Note: To run the project cd into the build directory
 ## Methods
 
 ### `findNodeById(nodeId: string): Node | null`
