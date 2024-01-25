@@ -23,13 +23,35 @@ code {
 	align-items: center;
 	gap: 20px;
 	padding-bottom: 10px;
-	border-bottom: 3px solid rgb(255, 188, 188);
+	border-bottom: 3px solid #ffbcbc;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 .note {
 	padding: 2px;
-	background: rgb(255 237 237);
+	background: #ffeded;
 }
 .note span {
 	font-weight: bold;
+}
+
+.button-container {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: center;
+	justify-content: center;
+}
+.button-container button {
+	border: none;
+	outline: none;
+	padding: 10px;
+	border: 3px solid #ffbcbc;
+	border-radius: 10px;
+	background: #ffeded;
+	cursor: pointer;
+	transition: all 0.2s;
+	font-weight: bold;
+}
+.button-container button:hover {
+	background: #ffbcbc;
 }
