@@ -8,6 +8,12 @@ import Operations from "./components/Operations";
 
 function App() {
 	const [step, setStep] = useState<number>(1);
+	const [jsonData, setJsonData] = useState<string>("");
+
+	const onTreeCreated = (jsonData: string) => {
+		setStep(2);
+		setJsonData(jsonData);
+	};
 
 	return (
 		<>
@@ -18,8 +24,8 @@ function App() {
 					<span>NOTE:</span> Click on a node to add child to it
 				</p>
 			</div>
-			{step === 1 && <CreateTree />}
-			{step === 2 && <Operations />}
+			{step === 1 && <CreateTree onTreeCreated={onTreeCreated} />}
+			{step === 2 && <Operations data={jsonData} />}
 		</>
 	);
 }

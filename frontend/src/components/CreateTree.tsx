@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { sha256 } from "../utils/hash";
 
 import { Graph } from "react-d3-graph";
@@ -75,7 +75,7 @@ const INITIAL_NODE = {
 	id: "Father",
 	size: NODE_SIZE,
 	x: window.innerWidth / 2,
-	y: window.innerHeight / 2 - 140,
+	y: window.innerHeight / 2 - 160,
 };
 interface Node {
 	hashedId: string;
@@ -89,7 +89,11 @@ interface Link {
 	target: string;
 }
 
-const CreateTree = () => {
+type Props = {
+	onTreeCreated: (jsonData: string) => void;
+};
+
+const CreateTree: FC<Props> = ({ onTreeCreated }) => {
 	const [nodes, setNodes] = useState<Array<Node>>([INITIAL_NODE]);
 	const [links, setLinks] = useState<Array<Link>>([]);
 
@@ -124,14 +128,16 @@ const CreateTree = () => {
 				},
 			};
 		});
-		const jsonData = JSON.stringify(relationsData);
+		onTreeCreated(JSON.stringify(relationsData));
 	};
 
 	return (
 		<>
 			<div className="button-container">
 				<h5>First Step: Create your own JSON file</h5>
-				<button onClick={createJsonHandler}>Go to next step</button>
+				<button className="button" onClick={createJsonHandler}>
+					Go to next step
+				</button>
 			</div>
 			<Graph
 				id="graph-id" // id is mandatory
