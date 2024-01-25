@@ -108,4 +108,64 @@ class Tree:
             return True
         return False
 
+    def depth_of_farthest_child(self, node):
+        if not node.children:
+            return 0  # Leaf node, depth is 0
+
+        max_child_depth = 0
+        for child in node.children:
+            child_depth = self.depth_of_farthest_child(child)
+            max_child_depth = max(max_child_depth, child_depth)
+
+        return 1 + max_child_depth
+
+    def find_farthest_relationship(self):
+        def r_find_farthest_relationship(node):
+            if not node.children:
+                return 0, [node.value]
+
+            max_child_depth = 0
+            farthest_nodes = [node.value]
+
+            for child in node.children:
+                child_depth, child_nodes = r_find_farthest_relationship(child)
+
+                if child_depth + 1 > max_child_depth:
+                    max_child_depth = child_depth + 1
+                    farthest_nodes = [node.value] + child_nodes
+                elif child_depth + 1 == max_child_depth:
+                    farthest_nodes.extend(child_nodes)
+
+            return max_child_depth, farthest_nodes
+
+        if not self.root:
+            return None  # Tree is empty
+
+        _, farthest_relationship = r_find_farthest_relationship(self.root)
+        return farthest_relationship
+
+    def find_common_parent(self, node1, node2):
+        def find_path_to_root(node, target_value):
+            path = []
+            while node:
+                path.append(node)
+                if node.value == target_value:
+                    break
+                node = node.parent  # Assuming each node has a reference to its parent
+
+            return path
+
+        path1 = find_path_to_root(node1, self.root.value)
+        path2 = find_path_to_root(node2, self.root.value)
+
+        common_parent = None
+
+        for parent1, parent2 in zip(reversed(path1), reversed(path2)):
+            if parent1 == parent2:
+                common_parent = parent1
+            else:
+                break
+
+        return common_parent
+
     # TODO hash before passing in the strings
